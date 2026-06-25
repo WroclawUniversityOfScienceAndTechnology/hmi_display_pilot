@@ -1,0 +1,18 @@
+[settings]
+os=baremetal
+arch=xtensalx6
+compiler=gcc
+compiler.version=8
+compiler.cppstd=17
+compiler.libcxx=libstdc++11
+build_type=Release
+
+[buildenv]
+pwrforge_BUILD_TARGET=esp32
+WORKAROUND_FOR_ESP32_C_FLAGS=-Wall -Wextra -O3 -DNDEBUG
+WORKAROUND_FOR_ESP32_CXX_FLAGS=-Wall -Wextra -O3 -DNDEBUG
+
+[conf]
+tools.cmake.cmaketoolchain:generator=Ninja
+tools.cmake.cmaketoolchain:toolchain_file=${IDF_PATH}/tools/cmake/toolchain-esp32.cmake
+
