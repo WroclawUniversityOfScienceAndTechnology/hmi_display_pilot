@@ -5,7 +5,9 @@
 #pragma once
 
 #include <os_task.h>
-#include <cstdint>
+
+#include <stddef.h>  // NOLINT(modernize-deprecated-headers)
+#include <stdint.h>  // NOLINT(modernize-deprecated-headers)
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wall"

@@ -3,9 +3,11 @@
  */
 #pragma once
 
+#include <stddef.h>  // NOLINT(modernize-deprecated-headers)
+#include <stdint.h>  // NOLINT(modernize-deprecated-headers)
+
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
-#include <cstdint>
 
 namespace utils
 {
@@ -50,13 +52,13 @@ public:
 private:
     bool is_running_;
     const char* task_name_;
-    const size_t STACK_SIZE;
+    size_t stack_size_;
     uint16_t delay_;
-    const uint16_t TASK_PRIORITY;
+    uint16_t task_priority_;
     uint32_t task_counter_;
     TickType_t last_wake_time_;
     TaskHandle_t task_handle_;
-    bool wdt_enabled;
+    bool wdt_enabled_;
     static void runLoop(void* parameters);
 };
 }  // namespace utils

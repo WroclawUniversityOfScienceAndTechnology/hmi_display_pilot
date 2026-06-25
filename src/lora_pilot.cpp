@@ -1,3 +1,6 @@
+/**
+ * @copyright Copyright (C) 2025 <Company-Name>. All rights reserved.
+ */
 #include <os_task.h>
 #include <os_task_manager.h>
 #include <led_task.h>
@@ -6,7 +9,6 @@
 #include <freertos/task.h>
 #include <nvs_flash.h>
 
-#include <memory>
 #include <esp_log.h>
 
 constexpr char const* const TAG = "MAIN";
@@ -15,7 +17,6 @@ extern "C"
 {
     void app_main(void);  // NOLINT(readability-identifier-naming): name required by freertos
 }
-
 
 void initNvsFlash()
 {
@@ -38,10 +39,12 @@ void app_main(void)  // NOLINT(readability-identifier-naming): name required by 
 
     utils::OsTaskManager task_manager;
 
-    auto led_task = std::make_unique<tasks::LedTask>();
-    task_manager.addTask(std::move(led_task));
+    static tasks::LedTask led_task;
+    (void)task_manager.addTask(led_task);
 
-    ESP_LOGI(TAG, "Added %d tasks to the manager", task_manager.getTaskCount());
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+    ESP_LOGI(TAG, "Added %zu tasks to the manager", task_manager.getTaskCount());
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     ESP_LOGI(TAG, "Starting all tasks...");
     task_manager.startAll();
 

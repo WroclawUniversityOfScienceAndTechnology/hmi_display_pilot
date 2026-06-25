@@ -5,20 +5,24 @@
 #pragma once
 
 #include "os_task.h"
-#include <vector>
-#include <memory>
+
+#include <stddef.h>  // NOLINT(modernize-deprecated-headers)
 
 namespace utils
 {
 class OsTaskManager
 {
 public:
-    // Constructor and destructor
     OsTaskManager();
     ~OsTaskManager() = default;
 
+    OsTaskManager(OsTaskManager const&) = delete;
+    OsTaskManager& operator=(OsTaskManager const&) = delete;
+    OsTaskManager(OsTaskManager&&) = delete;
+    OsTaskManager& operator=(OsTaskManager&&) = delete;
+
     // Add a task to the manager
-    void addTask(std::unique_ptr<OsTask> task);
+    bool addTask(OsTask& task);
 
     // Start all tasks managed by the manager
     void startAll();
@@ -30,7 +34,9 @@ public:
     size_t getTaskCount() const;
 
 private:
-    // Container for the tasks
-    std::vector<std::unique_ptr<OsTask>> tasks_;
+    static constexpr size_t MAX_TASKS = 8;
+
+    size_t task_count_;
+    OsTask* tasks_[MAX_TASKS];  // NOLINT(modernize-avoid-c-arrays)
 };
 }  // namespace utils

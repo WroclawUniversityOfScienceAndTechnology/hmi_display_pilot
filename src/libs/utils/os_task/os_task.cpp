@@ -10,16 +10,16 @@ using namespace utils;
 
 OsTask::OsTask(const char* task_name, size_t stack_size, const uint16_t delay, uint16_t task_priority,
                bool wdt_en) noexcept :
+  is_running_(false),
   task_name_(task_name),
-  STACK_SIZE(stack_size),
+  stack_size_(stack_size),
   delay_(delay),
-  TASK_PRIORITY(task_priority),
+  task_priority_(task_priority),
+  task_counter_(0),
   last_wake_time_(0),
   task_handle_(nullptr),
-  wdt_enabled(wdt_en)
+  wdt_enabled_(wdt_en)
 {
-    task_counter_ = 0;
-    is_running_ = false;
 }
 
 OsTask::~OsTask()
@@ -54,7 +54,7 @@ void OsTask::run()
 
     is_running_ = true;
     BaseType_t task_returned =
-        xTaskCreatePinnedToCore(runLoop, task_name_, STACK_SIZE, this, TASK_PRIORITY, &task_handle_, 1);
+        xTaskCreatePinnedToCore(runLoop, task_name_, stack_size_, this, task_priority_, &task_handle_, 1);
 
     if (task_returned != pdPASS)
     {
@@ -134,7 +134,7 @@ void OsTask::runLoop(void* parameters)
     auto p_this = static_cast<OsTask*>(parameters);
     p_this->last_wake_time_ = xTaskGetTickCount();
 
-    if (p_this->wdt_enabled)
+    if (p_this->wdt_enabled_)
     {
         esp_task_wdt_add(p_this->task_handle_);
     }
@@ -144,7 +144,7 @@ void OsTask::runLoop(void* parameters)
         p_this->runImplementation();  // Task-specific logic
         p_this->task_counter_ += p_this->delay_;
         // Reset the task's watchdog timer
-        if (p_this->wdt_enabled)
+        if (p_this->wdt_enabled_)
         {
             esp_task_wdt_reset();
         }
@@ -157,7 +157,7 @@ void OsTask::runLoop(void* parameters)
         vTaskDelayUntil(&p_this->last_wake_time_, pdMS_TO_TICKS(p_this->delay_));
     }
 
-    if (p_this->wdt_enabled)
+    if (p_this->wdt_enabled_)
     {
         esp_task_wdt_delete(p_this->task_handle_);
     }

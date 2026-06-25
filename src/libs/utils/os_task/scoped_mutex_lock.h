@@ -3,6 +3,7 @@
  */
 #pragma once
 
+#include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 
 namespace utils
@@ -10,7 +11,7 @@ namespace utils
 class ScopedMutexLock
 {
 public:
-    ScopedMutexLock(SemaphoreHandle_t mutex, TickType_t timeout = portMAX_DELAY) :
+    explicit ScopedMutexLock(SemaphoreHandle_t mutex, TickType_t timeout = portMAX_DELAY) :
       mutex_(mutex), locked_(xSemaphoreTakeRecursive(mutex_, timeout) == pdTRUE)
     {
     }
@@ -22,6 +23,11 @@ public:
             xSemaphoreGiveRecursive(mutex_);
         }
     }
+
+    ScopedMutexLock(ScopedMutexLock const&) = delete;
+    ScopedMutexLock& operator=(ScopedMutexLock const&) = delete;
+    ScopedMutexLock(ScopedMutexLock&&) = delete;
+    ScopedMutexLock& operator=(ScopedMutexLock&&) = delete;
 
     bool isLocked() const
     {

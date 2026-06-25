@@ -5,23 +5,31 @@
 
 using namespace utils;  // NOLINT(readability-identifier-naming)
 
-OsTaskManager::OsTaskManager()
+OsTaskManager::OsTaskManager() : task_count_(0), tasks_{}
 {
     OsTask::initializeTaskWatchdog();
 }
 
 // // Add a task to the manager
-void OsTaskManager::addTask(std::unique_ptr<OsTask> task)
+bool OsTaskManager::addTask(OsTask& task)
 {
-    tasks_.emplace_back(std::move(task));
+    if (task_count_ >= MAX_TASKS)
+    {
+        return false;
+    }
+
+    tasks_[task_count_] = &task;
+    ++task_count_;
+    return true;
 }
 
 // Start all tasks managed by the manager
 void OsTaskManager::startAll()
 {
-    for (auto& task : tasks_)
+    for (size_t index = 0; index < task_count_; ++index)
     {
-        if (!task->isRunning())
+        auto* task = tasks_[index];
+        if ((task != nullptr) && !task->isRunning())
         {
             task->init();
             task->run();
@@ -32,14 +40,18 @@ void OsTaskManager::startAll()
 // Stop all tasks managed by the manager
 void OsTaskManager::stopAll()
 {
-    for (auto& task : tasks_)
+    for (size_t index = 0; index < task_count_; ++index)
     {
-        task->destroy();
+        auto* task = tasks_[index];
+        if (task != nullptr)
+        {
+            task->destroy();
+        }
     }
 }
 
 // Get the number of tasks managed
 size_t OsTaskManager::getTaskCount() const
 {
-    return tasks_.size();
+    return task_count_;
 }

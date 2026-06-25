@@ -23,6 +23,7 @@ bool LedTask::init()
     (void)gpio_set_direction(led_gpio_, GPIO_MODE_OUTPUT);
     setLedState(false);
 
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     ESP_LOGI(TAG, "LED task initialized on GPIO %d", static_cast<int>(led_gpio_));
     return true;
 }
@@ -31,11 +32,12 @@ void LedTask::runImplementation()
 {
     led_state_ = !led_state_;
     setLedState(led_state_);
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
     ESP_LOGI(TAG, "Led change state to [%d]", led_state_);
 }
 
 void LedTask::setLedState(bool enabled)
 {
-    const uint32_t gpio_level = static_cast<uint32_t>(active_low_ ? !enabled : enabled);
+    const auto gpio_level = static_cast<uint32_t>(active_low_ ? !enabled : enabled);
     (void)gpio_set_level(led_gpio_, gpio_level);
 }

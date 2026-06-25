@@ -3,12 +3,11 @@
  */
 #include "app_info.h"
 #include <esp_ota_ops.h>
-#include <string_view>
 
 using namespace utils;
 
-std::string_view AppInfo::getVersion()
+const char* AppInfo::getVersion()
 {
     const esp_app_desc_t* app_description = esp_app_get_description();
-    return {app_description->version};
+    return app_description->version;
 }
