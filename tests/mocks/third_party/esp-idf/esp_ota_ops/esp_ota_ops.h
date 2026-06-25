@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <cassert>
 #include <cstdint>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C"
