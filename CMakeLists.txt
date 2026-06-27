@@ -27,7 +27,7 @@ if(NOT position EQUAL -1)
 endif()
 
 project(
-  lora_pilot
+  hmi_display_pilot
   VERSION 0.1.0
   DESCRIPTION "Project description."
   HOMEPAGE_URL "www.hello-world.com"

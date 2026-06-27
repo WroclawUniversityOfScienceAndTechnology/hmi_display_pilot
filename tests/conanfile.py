@@ -7,11 +7,11 @@ from conan import ConanFile
 from conan.tools.cmake import CMake
 
 
-class Lora_pilotTestConan(ConanFile):  # type: ignore[misc, no-any-unimported]
-    name = "lora_pilot_test"
+class Hmi_display_pilotTestConan(ConanFile):  # type: ignore[misc, no-any-unimported]
+    name = "hmi_display_pilot_test"
     version = "0.1.0"
     settings = "os", "compiler", "build_type", "arch"
-    description = "Tests for lora_pilot"
+    description = "Tests for hmi_display_pilot"
     url = "www.hello-world.com"
     generators = "CMakeToolchain", "CMakeDeps"
 

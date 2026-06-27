@@ -60,10 +60,10 @@ chmod 775 /usr/bin/run-clang-tidy.py
 
 WORKDIR /opt
 
-FROM esp32 AS custom_lora_pilot
+FROM esp32 AS custom_hmi_display_pilot
 # user can add his docker code below which will be integrated with
 # main docker file and not overwritten by pwrforge update
-FROM custom_lora_pilot AS lora_pilot_dev
+FROM custom_hmi_display_pilot AS hmi_display_pilot_dev
 
 ARG UID_NUMBER=1000
 ARG GID_NUMBER=1000
@@ -112,20 +112,11 @@ RUN if ! getent group "20" >/dev/null; then \
 RUN if ! getent group "24" >/dev/null; then \
         groupadd -g "24" "hostgrp_24"; \
     fi
-RUN if ! getent group "25" >/dev/null; then \
-        groupadd -g "25" "hostgrp_25"; \
-    fi
 RUN if ! getent group "27" >/dev/null; then \
         groupadd -g "27" "hostgrp_27"; \
     fi
-RUN if ! getent group "29" >/dev/null; then \
-        groupadd -g "29" "hostgrp_29"; \
-    fi
 RUN if ! getent group "30" >/dev/null; then \
         groupadd -g "30" "hostgrp_30"; \
-    fi
-RUN if ! getent group "44" >/dev/null; then \
-        groupadd -g "44" "hostgrp_44"; \
     fi
 RUN if ! getent group "46" >/dev/null; then \
         groupadd -g "46" "hostgrp_46"; \

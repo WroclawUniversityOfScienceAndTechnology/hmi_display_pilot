@@ -1,5 +1,5 @@
 [project]
-name = "lora_pilot"
+name = "hmi_display_pilot"
 version = "0.1.0"
 description = "Project description."
 homepage-url = "www.hello-world.com"

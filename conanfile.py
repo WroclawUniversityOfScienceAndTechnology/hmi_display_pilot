@@ -9,8 +9,8 @@ from conan.tools.cmake import CMake, cmake_layout
 from conan.tools.files import copy, get
 from conan.tools.scm import Git
 
-class Lora_pilotConan(ConanFile):  # type: ignore[misc, no-any-unimported]
-    name = "lora_pilot"
+class Hmi_display_pilotConan(ConanFile):  # type: ignore[misc, no-any-unimported]
+    name = "hmi_display_pilot"
     version = "0.1.0"
     license = "MIT"
     description = "Project description."

@@ -1,7 +1,7 @@
 {
-    "name": "lora_pilot_dev",
+    "name": "hmi_display_pilot_dev",
     "dockerComposeFile": "docker-compose.yaml",
-    "service": "lora_pilot_dev",
+    "service": "hmi_display_pilot_dev",
     "remoteUser": "ubuntu",
     "workspaceFolder": "/workspace",
     "customizations": {
